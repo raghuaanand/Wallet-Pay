@@ -1,5 +1,5 @@
 {
-  "name": "WalletPay",
+  "name": "week-18",
   "private": true,
   "scripts": {
     "build": "turbo build",
@@ -8,16 +8,21 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
     "prettier": "^3.2.5",
-    "turbo": "latest",
-    "typescript": "^5.4.5"
+    "prisma": "^5.15.1",
+    "turbo": "latest"
   },
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "npm@10.8.1",
+  "packageManager": "npm@10.2.4",
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "@prisma/client": "^5.15.1"
+  }
 }
