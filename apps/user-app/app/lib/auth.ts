@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 export const authOptions = {
   providers: [
     CredentialsProvider({
+      // whatever we write under name will appear on the screen like "Sign in with {name}"
       name: "Credentials",
       credentials: {
         phone: {
