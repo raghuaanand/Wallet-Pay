@@ -23,9 +23,9 @@ export async function p2pTransfer(to: string, amount: number) {
         }
     }
     await prisma.$transaction(async (tx) => {
-        //to lock the balance row in the database
-        await tx.$queryRaw`SELECT * FROM "Balance" WHERE "userId" = ${Number(from)} FOR UPDATE`;
-        const fromBalance = await tx.balance.findUnique({
+           await tx.$queryRaw`SELECT * FROM "Balance" WHERE "userId" = ${Number(from)} FOR UPDATE`;
+
+          const fromBalance = await tx.balance.findUnique({
             where: { userId: Number(from) },
           });
           if (!fromBalance || fromBalance.amount < amount) {
@@ -50,5 +50,6 @@ export async function p2pTransfer(to: string, amount: number) {
                 timestamp: new Date()
             }
           })
+          // locking
     });
 }
