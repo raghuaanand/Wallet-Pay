@@ -6,7 +6,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
 
 async function getBalance() {
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession(authOptions); // an asynchronous function that returns a promise. it is used to retrieve the session info from the server
     const balance = await prisma.balance.findFirst({
         where: {
             userId: Number(session?.user?.id)
