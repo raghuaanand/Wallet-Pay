@@ -1,6 +1,6 @@
 
 export default function() {
     return <div>
-        Dashboard
+        This is the dashboard page.
     </div>
 }
