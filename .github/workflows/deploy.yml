@@ -28,3 +28,17 @@ jobs:
 
     - name: Verify Pushed Image
       run: docker pull raghuaanand/pay-u:latest  # Replace with your Docker Hub username and repository
+
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        script:
+          sudo docker pull raghuaanand/pay-u:latest
+          sudo docker stop pay-u || true
+          sudo docker rm pay-u || true
+          sudo docker run -d --name web-app -p 3005:3000 raghuaanand/pay-u:latest
+
+
