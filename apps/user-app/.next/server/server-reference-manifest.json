@@ -1,14 +1,5 @@
 {
-  "node": {
-    "e01de1537b57242633441a370ba482ca842c57d9": {
-      "workers": {
-        "app/(dashboard)/transfer/page": "(action-browser)/../../node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fhome%2Fraghu-anand%2FDocuments%2FProjects%2Fweek-18-2-ci-cd-master%2Fapps%2Fuser-app%2Fapp%2Flib%2Factions%2FcreateOnRamptxn.ts%22%2C%5B%22createOnRampTransaction%22%5D%5D%5D&__client_imported__=true!"
-      },
-      "layer": {
-        "app/(dashboard)/transfer/page": "action-browser"
-      }
-    }
-  },
+  "node": {},
   "edge": {},
-  "encryptionKey": "f4D6Xs02XzlwFVt/icre7TstDyYGqmGhENl5GUpXris="
+  "encryptionKey": "4eJKuG0Y1wRjnm+dTsZebZZrYxsq/Xy/AULlubBefRE="
 }

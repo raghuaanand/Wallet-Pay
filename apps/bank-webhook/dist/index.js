@@ -29222,7 +29222,7 @@ var require_client = __commonJS({
           "value": "prisma-client-js"
         },
         "output": {
-          "value": "/home/raghu-anand/Documents/Projects/week-18-2-ci-cd-master/node_modules/@prisma/client",
+          "value": "/home/raghu-anand/Documents/Projects/Wallet-Pay/node_modules/@prisma/client",
           "fromEnvVar": null
         },
         "config": {
