@@ -1,5 +1,5 @@
 {
-  "name": "patym-clone",
+  "name": "week-18",
   "private": true,
   "scripts": {
     "build": "turbo build",
@@ -8,6 +8,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "db:generate": "cd packages/db && npx prisma generate && cd ../..",
     "start-user-app": "cd ./apps/user-app && npm run start"
+
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
@@ -18,7 +19,7 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "npm@9.6.5",
+  "packageManager": "npm@10.2.4",
   "workspaces": [
     "apps/*",
     "packages/*"

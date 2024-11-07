@@ -16,7 +16,7 @@ async function main() {
             locked: 0
         }
       },
-      OnRampTransactions: {
+      OnRampTransaction: {
         create: {
           startTime: new Date(),
           status: "Success",
@@ -40,7 +40,7 @@ async function main() {
             locked: 0
         }
       },
-      OnRampTransactions: {
+      OnRampTransaction: {
         create: {
           startTime: new Date(),
           status: "Failure",
