@@ -1,5 +1,1 @@
-{
-  "node": {},
-  "edge": {},
-  "encryptionKey": "4eJKuG0Y1wRjnm+dTsZebZZrYxsq/Xy/AULlubBefRE="
-}
+{"node":{"a6798d2f2184be902b02df518f80445b400c63d3":{"workers":{"app/(dashboard)/p2p/page":3159},"layer":{"app/(dashboard)/p2p/page":"action-browser"}},"f00dc87c9588e48d70f0276edd5bfcfd56583038":{"workers":{"app/(dashboard)/transfer/page":70890},"layer":{"app/(dashboard)/transfer/page":"action-browser"}}},"edge":{},"encryptionKey":"DXKC4S3HFyOuHiE2oKS1U1mJar459/PqOc4/ypd01I0="}
