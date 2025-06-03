@@ -7,7 +7,7 @@ async function getBalance() {
     const session = await getServerSession(authOptions);
     const balance = await prisma.balance.findFirst({
         where: {
-            userId: Number((session?.user as { id?: string })?.id)
+            userId: Number((session?.user as { id?: string } | undefined)?.id)
         }
     });
     return {
@@ -18,7 +18,8 @@ async function getBalance() {
 
 async function getAllTransactions() {
     const session = await getServerSession(authOptions);
-    const userId = Number((session?.user as { id?: string })?.id);
+    // If your session user does not have 'id', you may need to cast or extend the type
+    const userId = Number((session?.user as { id?: string } | undefined)?.id);
 
     // Get OnRamp transactions
     const onRampTxns = await prisma.onRampTransaction.findMany({
@@ -42,8 +43,8 @@ async function getAllTransactions() {
     });
 
     // Transform and combine transactions
-    const allTransactions = [
-        ...onRampTxns.map(t => ({
+    const allTransactions: Transaction[] = [
+        ...onRampTxns.map((t:any) => ({
             id: `onramp-${t.id}`,
             type: 'onramp' as const,
             amount: t.amount,
@@ -52,9 +53,9 @@ async function getAllTransactions() {
             provider: t.provider,
             description: `Added money via ${t.provider}`
         })),
-        ...p2pTxns.map((t:any) => ({
+        ...p2pTxns.map((t: any) => ({
             id: `p2p-${t.id}`,
-            type: t.fromUserId === userId ? 'sent' : 'received' as const,
+            type: t.fromUserId === userId ? 'sent' as const : 'received' as const,
             amount: t.amount,
             time: t.timestamp,
             status: 'Success',
@@ -63,14 +64,14 @@ async function getAllTransactions() {
                 ? `Sent to ${t.toUser.name}` 
                 : `Received from ${t.fromUser.name}`
         }))
-    ].sort((a:any, b:any) => b.time.getTime() - a.time.getTime());
+    ].sort((a, b) => b.time.getTime() - a.time.getTime());
 
     return allTransactions;
 }
 
 async function getTransactionStats() {
     const session = await getServerSession(authOptions);
-    const userId = Number((session?.user as { id?: string })?.id);
+    const userId = Number((session?.user as { id?: string } | undefined)?.id);
 
     const [onRampTotal, p2pSent, p2pReceived, totalCount] = await Promise.all([
         prisma.onRampTransaction.aggregate({
@@ -106,9 +107,34 @@ async function getTransactionStats() {
     };
 }
 
+type OnRampTransaction = {
+    id: string;
+    type: "onramp";
+    amount: number;
+    time: Date;
+    status: string;
+    provider: string;
+    description: string;
+};
+
+type P2PTransaction = {
+    id: string;
+    type: "sent" | "received";
+    amount: number;
+    time: Date;
+    status: string;
+    user: { name: string; number: string };
+    description: string;
+    provider?: undefined;
+};
+
+type Transaction = OnRampTransaction | P2PTransaction;
+
 export default async function TransactionsPage() {
-    const [balance, transactions, stats] = await Promise.all([
-        getBalance(),
+    const [transactions, stats]: [
+        Transaction[],
+        Awaited<ReturnType<typeof getTransactionStats>>
+    ] = await Promise.all([
         getAllTransactions(),
         getTransactionStats()
     ]);
@@ -200,7 +226,7 @@ export default async function TransactionsPage() {
                         </div>
                     ) : (
                         <div className="space-y-3">
-                            {transactions.map((transaction:any) => (
+                            {transactions.map((transaction) => (
                                 <div key={transaction.id} className="flex items-center justify-between p-4 rounded-xl bg-gray-50/50 hover:bg-gray-100/50 transition-colors">
                                     <div className="flex items-center space-x-4">
                                         <div className={`p-2 rounded-lg ${
@@ -232,7 +258,7 @@ export default async function TransactionsPage() {
                                                 }`}>
                                                     {transaction.status}
                                                 </span>
-                                                {transaction.type === 'onramp' && 'provider' in transaction && transaction.provider && (
+                                                {transaction.type === 'onramp' && transaction.provider && (
                                                     <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                                                         {transaction.provider}
                                                     </span>
