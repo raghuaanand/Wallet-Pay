@@ -63,7 +63,7 @@ async function getAllTransactions() {
                 ? `Sent to ${t.toUser.name}` 
                 : `Received from ${t.fromUser.name}`
         }))
-    ].sort((a, b) => b.time.getTime() - a.time.getTime());
+    ].sort((a:any, b:any) => b.time.getTime() - a.time.getTime());
 
     return allTransactions;
 }
@@ -200,7 +200,7 @@ export default async function TransactionsPage() {
                         </div>
                     ) : (
                         <div className="space-y-3">
-                            {transactions.map((transaction) => (
+                            {transactions.map((transaction:any) => (
                                 <div key={transaction.id} className="flex items-center justify-between p-4 rounded-xl bg-gray-50/50 hover:bg-gray-100/50 transition-colors">
                                     <div className="flex items-center space-x-4">
                                         <div className={`p-2 rounded-lg ${

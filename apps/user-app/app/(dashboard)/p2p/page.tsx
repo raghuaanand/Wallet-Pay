@@ -104,7 +104,7 @@ export default async function P2PPage() {
                         <div className="ml-4">
                             <p className="text-sm font-medium text-gray-600">Last 30 Days</p>
                             <p className="text-2xl font-bold text-gray-900">
-                                ₹{(recentTransfers.reduce((sum, t) => sum + (t.type === 'sent' ? t.amount : 0), 0) / 100).toLocaleString()}
+                                ₹{(recentTransfers.reduce((sum:any, t:any) => sum + (t.type === 'sent' ? t.amount : 0), 0) / 100).toLocaleString()}
                             </p>
                         </div>
                     </div>
@@ -134,7 +134,7 @@ export default async function P2PPage() {
                         </div>
                     ) : (
                         <div className="space-y-3">
-                            {recentTransfers.map((transfer) => (
+                            {recentTransfers.map((transfer:any) => (
                                 <div key={transfer.id} className="flex items-center justify-between p-4 rounded-xl bg-gray-50/50 hover:bg-gray-100/50 transition-colors">
                                     <div className="flex items-center space-x-4">
                                         <div className={`p-3 rounded-xl ${transfer.type === 'sent' ? 'bg-red-100' : 'bg-green-100'}`}>
