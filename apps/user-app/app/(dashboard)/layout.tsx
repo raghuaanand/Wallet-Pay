@@ -1,21 +1,78 @@
+"use client";
+
 import { SidebarItem } from "../../components/SidebarItem";
+import { useState } from 'react';
 
 export default function Layout({
   children,
 }: {
   children: React.ReactNode;
 }): JSX.Element {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
-    <div className="flex">
-        <div className="w-72 border-r border-slate-300 min-h-screen mr-4 pt-28">
-            <div>
-                <SidebarItem href={"/dashboard"} icon={<HomeIcon />} title="Home" />
-                <SidebarItem href={"/transfer"} icon={<TransferIcon />} title="Transfer" />
-                <SidebarItem href={"/transactions"} icon={<TransactionsIcon />} title="Transactions" />
-                <SidebarItem href={"/p2p"} icon={<P2PTransferIcon />} title="P2P Transfer" />
+    <div className="flex min-h-screen bg-transparent">
+        {/* Mobile menu overlay */}
+        {mobileMenuOpen && (
+            <div className="fixed inset-0 z-50 lg:hidden">
+                <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setMobileMenuOpen(false)} />
+                <div className="fixed top-0 left-0 z-50 w-64 h-full bg-white/95 backdrop-blur-xl shadow-xl">
+                    <div className="flex items-center justify-between p-4 border-b border-gray-200">
+                        <h2 className="text-lg font-semibold text-gray-900">WalletPay</h2>
+                        <button
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100"
+                        >
+                            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <nav className="p-4 space-y-2">
+                        <SidebarItem href={"/dashboard"} icon={<HomeIcon />} title="Dashboard" />
+                        <SidebarItem href={"/transfer"} icon={<TransferIcon />} title="Add Money" />
+                        <SidebarItem href={"/transactions"} icon={<TransactionsIcon />} title="Transactions" />
+                        <SidebarItem href={"/p2p"} icon={<P2PTransferIcon />} title="Send Money" />
+                    </nav>
+                </div>
+            </div>
+        )}
+
+        {/* Desktop Sidebar */}
+        <div className="hidden lg:flex lg:flex-col lg:w-72 lg:fixed lg:inset-y-0 lg:pt-16">
+            <div className="flex flex-col flex-1 bg-white/80 backdrop-blur-xl border-r border-gray-200/50 shadow-xl">
+                <div className="flex flex-col flex-1 pt-8 pb-4 overflow-y-auto">
+                    <nav className="flex-1 px-4 space-y-2">
+                        <SidebarItem href={"/dashboard"} icon={<HomeIcon />} title="Dashboard" />
+                        <SidebarItem href={"/transfer"} icon={<TransferIcon />} title="Add Money" />
+                        <SidebarItem href={"/transactions"} icon={<TransactionsIcon />} title="Transactions" />
+                        <SidebarItem href={"/p2p"} icon={<P2PTransferIcon />} title="Send Money" />
+                    </nav>
+                </div>
             </div>
         </div>
-            {children}
+        
+        {/* Main content */}
+        <div className="flex flex-col flex-1 lg:ml-72">
+            {/* Mobile header */}
+            <div className="lg:hidden bg-white/80 backdrop-blur-xl border-b border-gray-200/50 px-4 py-3">
+                <div className="flex items-center justify-between">
+                    <h1 className="text-xl font-bold text-gray-900">WalletPay</h1>
+                    <button
+                        onClick={() => setMobileMenuOpen(true)}
+                        className="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100"
+                    >
+                        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <main className="flex-1 px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+                {children}
+            </main>
+        </div>
     </div>
   );
 }

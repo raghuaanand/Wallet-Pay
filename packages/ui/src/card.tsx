@@ -8,13 +8,15 @@ export function Card({
   children?: React.ReactNode;
 }): JSX.Element {
   return (
-    <div
-      className="border p-6 bg-white rounded-xl bg-[#ededed]"
-    >
-      <h1 className="text-xl border-b pb-2">
-        {title}
-      </h1>
-      <p>{children}</p>
+    <div className="bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden">
+      <div className="p-6">
+        <h1 className="text-lg font-semibold text-gray-900 mb-4 border-b border-gray-100 pb-3">
+          {title}
+        </h1>
+        <div className="text-gray-700">
+          {children}
+        </div>
+      </div>
     </div>
   );
 }
