@@ -29862,8 +29862,7 @@ var require_client = __commonJS({
         "sourceFilePath": "/home/raghu-anand/Documents/Wallet-Pay/packages/db/prisma/schema.prisma"
       },
       "relativeEnvPaths": {
-        "rootEnvPath": null,
-        "schemaEnvPath": "../../../packages/db/.env"
+        "rootEnvPath": null
       },
       "relativePath": "../../../packages/db/prisma",
       "clientVersion": "6.8.2",
