@@ -29872,6 +29872,7 @@ var require_client = __commonJS({
         "db"
       ],
       "activeProvider": "postgresql",
+      "postinstall": false,
       "inlineDatasources": {
         "db": {
           "url": {

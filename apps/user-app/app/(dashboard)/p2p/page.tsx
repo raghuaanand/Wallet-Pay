@@ -7,7 +7,7 @@ async function getBalance() {
     const session = await getServerSession(authOptions);
     const balance = await prisma.balance.findFirst({
         where: {
-            userId: Number(session?.user?.id)
+            userId: Number(session?.user?.email) // Use email as a unique identifier if 'id' does not exist
         }
     });
     return {
@@ -18,11 +18,17 @@ async function getBalance() {
 
 async function getRecentP2PTransfers() {
     const session = await getServerSession(authOptions);
+    // Find the user by email to get their numeric ID
+    const user = await prisma.user.findUnique({
+        where: { email: session?.user?.email || undefined }
+    });
+    const userId = user?.id;
+
     const transfers = await prisma.p2pTransfer.findMany({
         where: {
             OR: [
-                { fromUserId: Number(session?.user?.id) },
-                { toUserId: Number(session?.user?.id) }
+                { fromUserId: userId },
+                { toUserId: userId }
             ]
         },
         include: {
@@ -39,8 +45,8 @@ async function getRecentP2PTransfers() {
         id: t.id,
         time: t.timestamp,
         amount: t.amount,
-        type: t.fromUserId === Number(session?.user?.id) ? 'sent' : 'received',
-        user: t.fromUserId === Number(session?.user?.id) ? 
+        type: t.fromUserId === userId ? 'sent' : 'received',
+        user: t.fromUserId === userId ? 
             { name: t.toUser.name, number: t.toUser.number } : 
             { name: t.fromUser.name, number: t.fromUser.number }
     }))

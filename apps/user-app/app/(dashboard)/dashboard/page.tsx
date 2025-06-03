@@ -9,7 +9,7 @@ async function getBalance() {
     const session = await getServerSession(authOptions);
     const balance = await prisma.balance.findFirst({
         where: {
-            userId: Number(session?.user?.id)
+            userId: Number((session?.user as { id?: string })?.id)
         }
     });
     return {
@@ -22,7 +22,7 @@ async function getOnRampTransactions() {
     const session = await getServerSession(authOptions);
     const txns = await prisma.onRampTransaction.findMany({
         where: {
-            userId: Number(session?.user?.id)
+            userId: Number((session?.user as { id?: string })?.id)
         },
         orderBy: {
             startTime: 'desc'
@@ -39,11 +39,12 @@ async function getOnRampTransactions() {
 
 async function getP2PTransactions() {
     const session = await getServerSession(authOptions);
+    const userId = Number((session?.user as { id?: string })?.id);
     const txns = await prisma.p2pTransfer.findMany({
         where: {
             OR: [
-                { fromUserId: Number(session?.user?.id) },
-                { toUserId: Number(session?.user?.id) }
+                { fromUserId: userId },
+                { toUserId: userId }
             ]
         },
         include: {
@@ -55,12 +56,11 @@ async function getP2PTransactions() {
         },
         take: 5
     });
-    
     return txns.map(t => ({
         time: t.timestamp,
         amount: t.amount,
-        type: t.fromUserId === Number(session?.user?.id) ? 'sent' : 'received',
-        name: t.fromUserId === Number(session?.user?.id) ? t.toUser.name : t.fromUser.name
+        type: t.fromUserId === userId ? 'sent' : 'received',
+        name: t.fromUserId === userId ? t.toUser.name : t.fromUser.name
     }))
 }
 

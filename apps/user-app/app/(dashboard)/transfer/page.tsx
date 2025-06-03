@@ -9,7 +9,7 @@ async function getBalance() {
     const session = await getServerSession(authOptions);
     const balance = await prisma.balance.findFirst({
         where: {
-            userId: Number(session?.user?.id)
+            userId: Number(session?.user?.email) // Assuming 'email' is used as userId, update as per your schema
         }
     });
     return {
@@ -22,7 +22,7 @@ async function getOnRampTransactions() {
     const session = await getServerSession(authOptions);
     const txns = await prisma.onRampTransaction.findMany({
         where: {
-            userId: Number(session?.user?.id)
+            userId: Number(session?.user?.email) // Assuming 'email' is used as userId, update as per your schema
         },
         orderBy: {
             startTime: 'desc'

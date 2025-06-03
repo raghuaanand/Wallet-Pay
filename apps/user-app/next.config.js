@@ -3,4 +3,7 @@ module.exports = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  experimental: {
+    outputFileTracingRoot: require('path').join(__dirname, '../../'),
+  }
 };

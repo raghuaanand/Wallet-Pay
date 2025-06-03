@@ -1,8 +1,9 @@
 import db from "@repo/db/client";
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcrypt";
+import { NextAuthOptions } from "next-auth";
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
     providers: [
       CredentialsProvider({
           name: 'Credentials',
@@ -13,7 +14,6 @@ export const authOptions = {
           // TODO: User credentials type from next-aut
           async authorize(credentials: any) {
             // Do zod validation, OTP validation here
-            const hashedPassword = await bcrypt.hash(credentials.password, 10);
             const existingUser = await db.user.findFirst({
                 where: {
                     number: credentials.phone
@@ -32,27 +32,15 @@ export const authOptions = {
                 return null;
             }
 
-            try {
-                const user = await db.user.create({
-                    data: {
-                        number: credentials.phone,
-                        password: hashedPassword
-                    }
-                });
-            
-                return {
-                    id: user.id.toString(),
-                    name: user.name,
-                    email: user.number
-                }
-            } catch(e) {
-                console.error(e);
-            }
-
-            return null
+            // Don't create user here anymore - let the signup API handle it
+            return null;
           },
         })
     ],
+    pages: {
+        signIn: '/signin',
+        error: '/auth/error',
+    },
     secret: process.env.JWT_SECRET || "secret",
     callbacks: {
         // TODO: can u fix the type here? Using any is bad

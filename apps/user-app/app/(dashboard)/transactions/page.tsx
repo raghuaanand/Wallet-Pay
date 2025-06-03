@@ -7,7 +7,7 @@ async function getBalance() {
     const session = await getServerSession(authOptions);
     const balance = await prisma.balance.findFirst({
         where: {
-            userId: Number(session?.user?.id)
+            userId: Number((session?.user as { id?: string })?.id)
         }
     });
     return {
@@ -18,7 +18,7 @@ async function getBalance() {
 
 async function getAllTransactions() {
     const session = await getServerSession(authOptions);
-    const userId = Number(session?.user?.id);
+    const userId = Number((session?.user as { id?: string })?.id);
 
     // Get OnRamp transactions
     const onRampTxns = await prisma.onRampTransaction.findMany({
@@ -70,7 +70,7 @@ async function getAllTransactions() {
 
 async function getTransactionStats() {
     const session = await getServerSession(authOptions);
-    const userId = Number(session?.user?.id);
+    const userId = Number((session?.user as { id?: string })?.id);
 
     const [onRampTotal, p2pSent, p2pReceived, totalCount] = await Promise.all([
         prisma.onRampTransaction.aggregate({

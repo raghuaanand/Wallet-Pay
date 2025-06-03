@@ -5,7 +5,7 @@ import prisma from "@repo/db/client";
 
 export async function p2pTransfer(to: string, amount: number) {
     const session = await getServerSession(authOptions);
-    const from = session?.user?.id;
+    const from = (session?.user as { id?: number | string })?.id;
     if (!from) {
         return {
             message: "Error while sending"
