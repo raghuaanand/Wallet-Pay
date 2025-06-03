@@ -1,0 +1,16 @@
+{
+  "name": "wallet-pay",
+  "version": "1.0.0",
+  "apps": [
+    {
+      "name": "user-app",
+      "directory": "apps/user-app",
+      "framework": "nextjs"
+    },
+    {
+      "name": "merchant-app", 
+      "directory": "apps/merchant-app",
+      "framework": "nextjs"
+    }
+  ]
+}
