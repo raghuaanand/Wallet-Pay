@@ -52,7 +52,7 @@ async function getAllTransactions() {
             provider: t.provider,
             description: `Added money via ${t.provider}`
         })),
-        ...p2pTxns.map(t => ({
+        ...p2pTxns.map((t:any) => ({
             id: `p2p-${t.id}`,
             type: t.fromUserId === userId ? 'sent' : 'received' as const,
             amount: t.amount,

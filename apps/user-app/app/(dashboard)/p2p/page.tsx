@@ -41,7 +41,7 @@ async function getRecentP2PTransfers() {
         take: 10
     });
     
-    return transfers.map(t => ({
+    return transfers.map((t:any) => ({
         id: t.id,
         time: t.timestamp,
         amount: t.amount,
