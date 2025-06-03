@@ -29,7 +29,7 @@ async function getOnRampTransactions() {
         },
         take: 5
     });
-    return txns.map(t => ({
+    return txns.map((t: any) => ({
         time: t.startTime,
         amount: t.amount,
         status: t.status,
@@ -56,7 +56,7 @@ async function getP2PTransactions() {
         },
         take: 5
     });
-    return txns.map(t => ({
+    return txns.map((t: any) => ({
         time: t.timestamp,
         amount: t.amount,
         type: t.fromUserId === userId ? 'sent' : 'received',
