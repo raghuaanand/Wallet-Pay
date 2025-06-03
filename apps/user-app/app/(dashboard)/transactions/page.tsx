@@ -3,23 +3,12 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
 import prisma from "@repo/db/client";
 
-async function getBalance() {
-    const session = await getServerSession(authOptions);
-    const balance = await prisma.balance.findFirst({
-        where: {
-            userId: Number((session?.user as { id?: string } | undefined)?.id)
-        }
-    });
-    return {
-        amount: balance?.amount || 0,
-        locked: balance?.locked || 0
-    }
-}
-
 async function getAllTransactions() {
     const session = await getServerSession(authOptions);
-    // If your session user does not have 'id', you may need to cast or extend the type
-    const userId = Number((session?.user as { id?: string } | undefined)?.id);
+    const userId = Number((session?.user as any)?.id);
+    if (!userId) {
+        return [];
+    }
 
     // Get OnRamp transactions
     const onRampTxns = await prisma.onRampTransaction.findMany({
@@ -71,7 +60,15 @@ async function getAllTransactions() {
 
 async function getTransactionStats() {
     const session = await getServerSession(authOptions);
-    const userId = Number((session?.user as { id?: string } | undefined)?.id);
+    const userId = Number((session?.user as any)?.id);
+    if (!userId) {
+        return {
+            totalAdded: 0,
+            totalSent: 0,
+            totalReceived: 0,
+            totalTransactions: 0
+        };
+    }
 
     const [onRampTotal, p2pSent, p2pReceived, totalCount] = await Promise.all([
         prisma.onRampTransaction.aggregate({

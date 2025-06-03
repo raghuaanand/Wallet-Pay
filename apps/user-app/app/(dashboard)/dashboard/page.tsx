@@ -7,9 +7,14 @@ import { OnRampTransactions } from "../../../components/OnRampTransactions";
 
 async function getBalance() {
     const session = await getServerSession(authOptions);
+    const userId = Number((session?.user as any)?.id);
+    if (!userId) {
+        return { amount: 0, locked: 0 };
+    }
+    
     const balance = await prisma.balance.findFirst({
         where: {
-            userId: Number((session?.user as { id?: string })?.id)
+            userId: userId
         }
     });
     return {
@@ -20,9 +25,14 @@ async function getBalance() {
 
 async function getOnRampTransactions() {
     const session = await getServerSession(authOptions);
+    const userId = Number((session?.user as any)?.id);
+    if (!userId) {
+        return [];
+    }
+    
     const txns = await prisma.onRampTransaction.findMany({
         where: {
-            userId: Number((session?.user as { id?: string })?.id)
+            userId: userId
         },
         orderBy: {
             startTime: 'desc'
@@ -39,7 +49,11 @@ async function getOnRampTransactions() {
 
 async function getP2PTransactions() {
     const session = await getServerSession(authOptions);
-    const userId = Number((session?.user as { id?: string })?.id);
+    const userId = Number((session?.user as any)?.id);
+    if (!userId) {
+        return [];
+    }
+    
     const txns = await prisma.p2pTransfer.findMany({
         where: {
             OR: [

@@ -38,12 +38,18 @@ export async function POST(req: NextRequest) {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create user
+    // Create user with balance record
     const user = await db.user.create({
       data: {
         name,
         number: phone,
         password: hashedPassword,
+        Balance: {
+          create: {
+            amount: 0,
+            locked: 0
+          }
+        }
       },
     });
 

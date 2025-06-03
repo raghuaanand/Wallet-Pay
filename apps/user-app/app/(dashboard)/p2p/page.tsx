@@ -5,9 +5,14 @@ import prisma from "@repo/db/client";
 
 async function getBalance() {
     const session = await getServerSession(authOptions);
+    const userId = Number((session?.user as any)?.id);
+    if (!userId) {
+        return { amount: 0, locked: 0 };
+    }
+    
     const balance = await prisma.balance.findFirst({
         where: {
-            userId: Number(session?.user?.email) // Use email as a unique identifier if 'id' does not exist
+            userId: userId
         }
     });
     return {
@@ -18,11 +23,10 @@ async function getBalance() {
 
 async function getRecentP2PTransfers() {
     const session = await getServerSession(authOptions);
-    // Find the user by email to get their numeric ID
-    const user = await prisma.user.findUnique({
-        where: { email: session?.user?.email || undefined }
-    });
-    const userId = user?.id;
+    const userId = Number((session?.user as any)?.id);
+    if (!userId) {
+        return [];
+    }
 
     const transfers = await prisma.p2pTransfer.findMany({
         where: {
