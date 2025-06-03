@@ -150,7 +150,7 @@ export default async function Dashboard() {
                 <div className="bg-white/60 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200/50 p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-4 border-b border-gray-100 pb-3">Recent P2P Transfers</h3>
                     <div className="space-y-3">
-                        {p2pTransactions.map((transfer, index) => (
+                        {p2pTransactions.map((transfer: any, index:any) => (
                             <div key={index} className="flex items-center justify-between p-3 rounded-xl bg-gray-50/50 hover:bg-gray-100/50 transition-colors">
                                 <div className="flex items-center space-x-3">
                                     <div className={`p-2 rounded-lg ${transfer.type === 'sent' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`}>
